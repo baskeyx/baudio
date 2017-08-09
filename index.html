@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html>
+
+  <head>
+
+    <title>Baudio - Baskey Audio Player</title>
+
+    <meta name="description" content="Basic HTML5 Audio player using Vanilla JS and CSS">
+
+    <style>
+
+      .seekbar {
+         -webkit-appearance: none;
+         background:#000;
+         width:100%;
+      }
+
+      .seekbar[value] {color:#c80000} /* IE10 */
+      .seekbar::-webkit-progress-bar-value {background:#c80000}
+      .seekbar::-webkit-progress-value {background:#c80000}
+      .seekbar::-moz-progress-bar {background:#c80000}
+
+      .audio-con{
+        max-width:800px;
+      }
+
+      .audio-con button{
+        width:50px;
+      }
+
+      #time-duration{
+        float:left;
+      }
+
+      #time-remaining{
+        float:right;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="audio-con">
+      <audio src="http://back.oasis-stores.com/misc/audio/TheExtraordinaryChroniclesOfTheCuriousBookshop.mp3" id="player"></audio>
+      <div id="time-duration">00:00</div>
+      <div id="time-remaining">-00:00</div>
+      <progress id="seekbar" class="seekbar" value="0" max="1"></progress>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+    </div>
+
+  </body>
+
+<script src="js/baudio.min.js"> </script>
+
+</html>
