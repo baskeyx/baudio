@@ -1,15 +1,5 @@
 "use strict";
 
-// player and controls
-var playB = document.getElementById("play");
-var pauseB = document.getElementById("pause");
-var player = document.getElementById("player");
-var seekbar = document.getElementById("seekbar");
-
-// dom elements for times updates
-var timeDurationCon = document.getElementById("time-duration");
-var timeRemainingCon = document.getElementById("time-remaining");
-
 function pad(d) {
   return (d < 10) ? '0' + d.toString() : d.toString();
 }
@@ -20,28 +10,46 @@ function convertTime(currentTR){
   return minutesR + ":" + secondsR;
 }
 
-playB.addEventListener("click", function(){
-  player.play();
-});
+// player and controls
 
-pauseB.addEventListener("click", function(){
-  player.pause();
-});
+var playB = document.querySelectorAll(".play-button");
+var pauseB = document.querySelectorAll(".pause-button")
+var player = document.querySelectorAll(".player");
+var seekbar = document.querySelectorAll(".seekbar");
 
-player.addEventListener("timeupdate", function(){
-  var currentTimePos = this.currentTime;
-  seekbar.setAttribute("value", currentTimePos / this.duration);
-  timeDurationCon.innerHTML = convertTime(currentTimePos);
-  timeRemainingCon.innerHTML = "-" + convertTime(player.duration - currentTimePos);
-});
+for (var i=0;i<playB.length;i++){
+  playB[i].addEventListener("click", function(){
+    player[this.id.split("-")[1]-1].play();
+  });
+}
 
-player.addEventListener("canplaythrough", function(){
-  timeRemainingCon.innerHTML = "-" + convertTime(player.duration);
-})
+for (var j=0;j<pauseB.length;j++){
+  pauseB[j].addEventListener("click", function(){
+    player[this.id.split("-")[1]-1].pause();
+  });
+}
 
-document.getElementById('seekbar').addEventListener('click', function (e) {
+for (var k=0;k<seekbar.length;k++){
+  seekbar[k].addEventListener("click", function(e){
     var x = e.pageX - this.offsetLeft;
     var clickedValue = x * this.max / this.offsetWidth;
-    var position = player.duration * clickedValue;
-    player.currentTime = position;
-});
+    var position = player[this.id.split("-")[1]-1].duration * clickedValue;
+    player[this.id.split("-")[1]-1].currentTime = position;
+  });
+}
+
+var timeDurationCon = document.querySelectorAll(".time-duration");
+var timeRemainingCon = document.querySelectorAll(".time-remaining");
+
+for (var l=0;l<player.length;l++){
+  player[l].addEventListener("canplaythrough", function(){
+    timeRemainingCon[this.id.split("-")[1]-1].innerHTML = convertTime(player[this.id.split("-")[1]-1].duration);
+  });
+
+  player[l].addEventListener("timeupdate", function(){
+    var currentTimePos = this.currentTime;
+    seekbar[this.id.split("-")[1]-1].setAttribute("value", currentTimePos / this.duration);
+    timeDurationCon[this.id.split("-")[1]-1].innerHTML = convertTime(currentTimePos);
+    timeRemainingCon[this.id.split("-")[1]-1].innerHTML = convertTime(player[this.id.split("-")[1]-1].duration - currentTimePos);
+  });
+}
